@@ -18,17 +18,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import useExpenseStore from "../store/expenseStore";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-const theme = {
-  // Define your preferred theme here
-};
+const theme = {};
 
 const ExpenseEntryScreen = () => {
   const { addExpense, loadExpenses } = useExpenseStore();
 
   const [amount, setAmount] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Food");
-  const [date, setDate] = useState(new Date()); // Use a JavaScript Date object
-  const [showDatePicker, setShowDatePicker] = useState(false); // For showing/hiding date picker
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [categories, setCategories] = useState([
     "Food",
@@ -41,7 +39,6 @@ const ExpenseEntryScreen = () => {
   const [errorText, setErrorText] = useState("");
 
   useEffect(() => {
-    // Load expenses from AsyncStorage when the component mounts
     const loadExpenseData = async () => {
       try {
         const data = await AsyncStorage.getItem("expenses");
@@ -58,14 +55,13 @@ const ExpenseEntryScreen = () => {
   }, []);
 
   const handleExpenseSubmit = async () => {
-    // Validate amount and date
     if (!amount || isNaN(parseFloat(amount))) {
       setErrorText("Amount is invalid.");
       setErrorModalVisible(true);
       return;
     }
 
-    const selectedDate = date.toISOString().split("T")[0]; // Convert date to YYYY-MM-DD format
+    const selectedDate = date.toISOString().split("T")[0];
 
     if (!selectedDate || !isValidDate(selectedDate)) {
       setErrorText("Date is invalid. Select a valid date.");
@@ -78,10 +74,7 @@ const ExpenseEntryScreen = () => {
       category: selectedCategory,
       date: selectedDate,
     };
-
     addExpense(expense);
-
-    // Save the expense to AsyncStorage
     try {
       const existingData = await AsyncStorage.getItem("expenses");
       const parsedData = existingData ? JSON.parse(existingData) : [];
@@ -90,13 +83,9 @@ const ExpenseEntryScreen = () => {
     } catch (error) {
       console.error("Error saving expense:", error);
     }
-
-    // Clear input fields
     setAmount("");
     setSelectedCategory("Food");
-    setDate(new Date()); // Reset the date to the current date
-
-    // Close the error modal if it's open
+    setDate(new Date());
     setErrorModalVisible(false);
   };
 
@@ -111,11 +100,9 @@ const ExpenseEntryScreen = () => {
 
   const onDateChange = (event, selectedDate) => {
     if (event.type === "set") {
-      // User selected a date
       setShowDatePicker(false);
       setDate(selectedDate || date);
     } else {
-      // User canceled the date selection
       setShowDatePicker(false);
     }
   };
@@ -124,23 +111,19 @@ const ExpenseEntryScreen = () => {
     <PaperProvider theme={theme}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <Text>Enter Expense:</Text>
+          <Text>Enter Expense Amount:</Text>
           <TextInput
             label="Amount"
             value={amount}
             onChangeText={(text) => setAmount(text)}
             keyboardType="numeric"
+            style={styles.amountInput}
           />
-          <Picker
-            selectedValue={selectedCategory}
-            onValueChange={(itemValue) => setSelectedCategory(itemValue)}
-            style={styles.input}
-          >
-            {categories.map((category) => (
-              <Picker.Item key={category} label={category} value={category} />
-            ))}
-          </Picker>
-          <Button onPress={showDatePickerModal} title="Select Date" />
+          <Button
+            onPress={showDatePickerModal}
+            title="Select Date"
+            style={styles.submitBtn}
+          />
           {showDatePicker && (
             <DateTimePicker
               value={date}
@@ -150,7 +133,19 @@ const ExpenseEntryScreen = () => {
               onChange={onDateChange}
             />
           )}
-          <Button onPress={handleExpenseSubmit} title="Submit" />
+          <Picker
+            selectedValue={selectedCategory}
+            onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+            style={styles.input}
+          >
+            {categories.map((category) => (
+              <Picker.Item key={category} label={category} value={category} />
+            ))}
+          </Picker>
+
+          <View style={styles.submitBtn}>
+            <Button onPress={handleExpenseSubmit} title="Submit" />
+          </View>
 
           <Portal>
             <Modal
@@ -174,7 +169,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    marginBottom: 10,
+    marginVertical: 20,
   },
   modalContainer: {
     flex: 1,
@@ -185,8 +180,11 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 20,
     color: "white",
-    marginBottom: 20,
   },
+  amountInput: {
+    marginBottom: 15,
+  },
+  submitBtn: {},
 });
 
 export default ExpenseEntryScreen;

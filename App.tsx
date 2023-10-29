@@ -5,11 +5,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import TabNavigator from "./navigation/TabNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useExpenseStore from "./store/expenseStore";
-import DismissKeyboard from "react-native-dismiss-keyboard";
-// import {
-//   FontAwesome5,
-//   MaterialCommunityIcons,
-// } from "react-native-vector-icons";
 
 const theme = {
   ...DefaultTheme,
@@ -19,9 +14,6 @@ const theme = {
   },
   flex: 1,
 };
-
-// FontAwesome5.loadFont();
-// MaterialCommunityIcons.loadFont();
 
 const App = () => {
   const { loadExpenses } = useExpenseStore();
@@ -40,11 +32,11 @@ const App = () => {
 
     loadExpenseData();
   }, []);
+
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
         <TabNavigator />
-        {/* </DismissKeyboard> */}
       </NavigationContainer>
     </PaperProvider>
   );

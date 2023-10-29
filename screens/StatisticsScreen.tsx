@@ -11,7 +11,6 @@ const StatisticsScreen = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Calculate category statistics and total amount spent when the screen becomes focused
       calculateCategoryStatistics();
     }, [calculateCategoryStatistics])
   );
@@ -27,7 +26,6 @@ const StatisticsScreen = () => {
     ],
   };
 
-  // Customize the appearance of the bar chart
   const chartConfig = {
     backgroundGradientFrom: theme.colors.background,
     backgroundGradientTo: theme.colors.background,
@@ -39,14 +37,16 @@ const StatisticsScreen = () => {
     <View style={styles.container}>
       {amounts.length > 0 ? (
         <>
-          <Text>Total Amount Spent: ${totalAmountSpent.toFixed(2)}</Text>
-          <Text>Spending by Categories (Bar Chart):</Text>
+          <Text style={styles.header}>
+            Total Amount Spent: ${totalAmountSpent.toFixed(2)}
+          </Text>
+          <Text style={styles.subHeader}>Spending by Categories Chart:</Text>
           <BarChart
             data={chartData}
             width={Dimensions.get("screen").width - 50}
             height={450}
             chartConfig={chartConfig}
-            verticalLabelRotation={30} // Rotate X-axis labels for better visibility
+            verticalLabelRotation={30}
           />
         </>
       ) : (
@@ -61,6 +61,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  header: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  subHeader: {
+    fontSize: 20,
+    marginBottom: 10,
   },
 });
 

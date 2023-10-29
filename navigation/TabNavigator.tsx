@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ExpenseEntryScreen from "./../screens/ExpenseEntryScreen";
 import ExpenseListScreen from "./../screens/ExpenseListScreen";
-import { FontAwesome5 } from "react-native-vector-icons"; // Import the icon library
+import { FontAwesome5 } from "react-native-vector-icons";
 import StatisticsScreen from "../screens/StatisticsScreen";
 
 function HomeScreen() {
@@ -25,7 +25,7 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: "Entry",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="plus-circle" size={size} color={color} /> // Add the icon here
+            <FontAwesome5 name="plus-circle" size={size} color={color} />
           ),
         }}
       />
@@ -35,13 +35,13 @@ const TabNavigator = () => {
         options={{
           tabBarLabel: "List",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="list" size={size} color={color} /> // Add the icon here
+            <FontAwesome5 name="list" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
         name="Statistics"
-        component={StatisticsScreen} // Use the StatisticsScreen component
+        component={StatisticsScreen}
         options={{
           tabBarLabel: "Statistics",
           tabBarIcon: ({ color, size }) => (

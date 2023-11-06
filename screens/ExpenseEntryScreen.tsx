@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   Button,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -13,10 +12,12 @@ import {
   Provider as PaperProvider,
   Modal,
   Portal,
+  Text,
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useExpenseStore from "../store/expenseStore";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import Toast from "react-native-toast-message";
 
 const theme = {};
 
@@ -56,16 +57,26 @@ const ExpenseEntryScreen = () => {
 
   const handleExpenseSubmit = async () => {
     if (!amount || isNaN(parseFloat(amount))) {
-      setErrorText("Amount is invalid.");
-      setErrorModalVisible(true);
+      Toast.show({
+        type: "error",
+        position: "top",
+        text1: "Error",
+        text2: "Not valid amount",
+      });
       return;
     }
 
     const selectedDate = date.toISOString().split("T")[0];
 
     if (!selectedDate || !isValidDate(selectedDate)) {
-      setErrorText("Date is invalid. Select a valid date.");
-      setErrorModalVisible(true);
+      Toast.show({
+        type: "error",
+        position: "top",
+        text1: "Error",
+        text2: "Not valid amount",
+      });
+      // setErrorText("Date is invalid. Select a valid date.");
+      // setErrorModalVisible(true);
       return;
     }
 
@@ -80,6 +91,12 @@ const ExpenseEntryScreen = () => {
       const parsedData = existingData ? JSON.parse(existingData) : [];
       parsedData.push(expense);
       await AsyncStorage.setItem("expenses", JSON.stringify(parsedData));
+      Toast.show({
+        type: "success",
+        position: "top",
+        text1: "Success",
+        text2: "New expense was added",
+      });
     } catch (error) {
       console.error("Error saving expense:", error);
     }

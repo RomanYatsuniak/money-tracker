@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { View, Keyboard, TouchableWithoutFeedback } from "react-native";
+import TabNavigator from "./navigation/TabNavigator";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
-import TabNavigator from "./navigation/TabNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useExpenseStore from "./store/expenseStore";
+import Toast from "react-native-toast-message";
 
 const theme = {
   ...DefaultTheme,
@@ -17,6 +17,7 @@ const theme = {
 
 const App = () => {
   const { loadExpenses } = useExpenseStore();
+
   useEffect(() => {
     const loadExpenseData = async () => {
       try {
@@ -38,8 +39,12 @@ const App = () => {
       <NavigationContainer>
         <TabNavigator />
       </NavigationContainer>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </PaperProvider>
   );
 };
 
 export default App;
+function useMaterial3Theme(): { theme: any } {
+  throw new Error("Function not implemented.");
+}

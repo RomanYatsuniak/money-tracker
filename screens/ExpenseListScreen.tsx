@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useExpenseStore, { Expense } from "../store/expenseStore";
-import { Card, IconButton } from "react-native-paper";
+import { Card, IconButton, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const categoryIcons = {
@@ -20,7 +20,7 @@ const categoryIcons = {
 
 const ExpenseListScreen = () => {
   const { expenses, removeExpense, removeAllExpenses } = useExpenseStore();
-
+  const theme = useTheme();
   const handleDeleteExpense = (expense: Expense) => {
     removeExpense(expense);
     AsyncStorage.getItem("expenses")
@@ -77,7 +77,15 @@ const ExpenseListScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.backgroundColor,
+          color: "white",
+        },
+      ]}
+    >
       <TouchableOpacity
         onPress={handleRemoveAllExpenses}
         style={styles.deleteAllButton}
@@ -97,6 +105,7 @@ const ExpenseListScreen = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    marginBottom: 100,
   },
   expenseItem: {
     marginBottom: 16,
